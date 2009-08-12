@@ -1,6 +1,6 @@
 = simpleMailer
 
-Description goes here.
+SimpleMailer is a very simple wrapper for Ruby's net::smtp
 
 == Note on Patches/Pull Requests
  
@@ -12,6 +12,10 @@ Description goes here.
   (if you want to have your own version, that is fine but
    bump version in a commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
+
+== Thanks
+
+Thanks to *technicalpickles* for his awesome gem *Jeweler*
 
 == Copyright
 

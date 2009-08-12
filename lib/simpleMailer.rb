@@ -1,11 +1,14 @@
-require 'net/smtp'
-
 class SimpleMailer 
+  require 'base64'
+  require 'net/smtp'
+  require 'shared-mime-info'
+
   attr_accessor :host, :port
   attr_accessor :from, :to
   attr_accessor :title, :message
   attr_accessor :files
   
+  MARKER="THATSMAMARKER"
     
   def initialize(host="",port=25)
     @host=host
@@ -15,6 +18,7 @@ class SimpleMailer
     @title=""
     @message=""
     @files=Array.new
+    @body=""
   end
   
   def to(to)
@@ -47,16 +51,56 @@ class SimpleMailer
       raise "Can't read file #{file}" unless File.readable?(file)
       @files<<file
     end
+    self
+  end
+
+  def generate_file_part(file)
+    b64file=String.new
+    filename=File.basename(file)
+    part=String.new
+    File.open(file) do |f|
+      b64file=Base64.b64encode(f.read)
+    end
+    part =<<EOF
+--#{MARKER}
+Content-Disposition: attachment; filename="#{filename}"
+Content-Type: #{MIME::check(file).to_s}; name="#{filename}"
+Content-Transfer-Encoding: base64
+
+#{b64file}
+
+
+EOF
+  end
+
+  # TODO: Get information and format them to create a multipart message
+  def generate_body
+    @body =<<EOF
+From: #{@from}
+To: #{@to}
+Subject: #{@title}
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary=#{MARKER}
+--#{MARKER}
+Content-Type: text/plain
+Content-Transfer-Encoding:8bit
+
+#{@message}
+
+EOF
+    # Time to process our files
+    @files.each do |file|
+      @body+=generate_file_part(file)
+    end
+    @body+="--#{MARKER}--"
+    return true
   end
 
   def send()
     Net::SMTP.start(@host,@port) do |smtp|
-      body ="From: #{@from}\n"
-      body+="To: #{@to}\n"
-      body+="Subject: #{@title}\n"
-      body+="\n#{@message}"
       begin
-        smtp.send_message(body,@from,@to)
+        generate_body
+        smtp.send_message(@body,@from,@to)
         return true
       rescue => e
         e
