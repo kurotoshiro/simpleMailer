@@ -5,8 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "simpleMailer"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{A simple mailer gem}
+    gem.description = %Q{SimpleMailer is a simple wrapper for net::smtp that let you attach files}
     gem.email = "kurotoshiro@gmail.com"
     gem.homepage = "http://github.com/Kurotoshiro/simpleMailer"
     gem.authors = ["Yoann LE TOUCHE"]
