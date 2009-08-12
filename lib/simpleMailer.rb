@@ -38,7 +38,17 @@ class SimpleMailer
     @message=message
     self
   end
-  
+
+  # WARNING : with_files clear @files before adding new ones
+  def with_files(files)
+    @files=Array.new
+    files.each do |file|
+      raise "File #{file} doesn't exist" unless File.exists?(file)
+      raise "Can't read file #{file}" unless File.readable?(file)
+      @files<<file
+    end
+  end
+
   def send()
     Net::SMTP.start(@host,@port) do |smtp|
       body ="From: #{@from}\n"
