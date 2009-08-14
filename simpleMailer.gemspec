@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{simpleMailer}
-  s.version = "0.1.2"
+  s.version = "0.1.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Yoann LE TOUCHE"]
-  s.date = %q{2009-08-12}
+  s.date = %q{2009-08-14}
   s.description = %q{SimpleMailer is a simple wrapper for net::smtp that let you attach files}
   s.email = %q{kurotoshiro@gmail.com}
   s.extra_rdoc_files = [
