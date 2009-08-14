@@ -2,6 +2,27 @@
 
 SimpleMailer is a very simple wrapper for Ruby's net::smtp
 
+== Usage
+
+require "rubygems"
+require "simpleMailer"
+
+mail=SimpleMailer.new("some.smtp.com",port=25)
+mail.to("foo@bar.com")
+mail.from("simple@mailer.com")
+mail.with_title("That's some title for you")
+mail.message("Later you will be able to use HTML")
+mail.with_files(["/tmp/awesome.file","~/archive.tbz2"])
+mail.send # Nothing is really done before this point
+
+But you could have :
+
+mail.to("foo@bar").from("foo@bar").with_title("title").message("message").send
+
+== Testing
+
+No testing right now, but I will work on it for a future version
+
 == Note on Patches/Pull Requests
  
 * Fork the project.
