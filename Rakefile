@@ -10,6 +10,7 @@ begin
     gem.email = "kurotoshiro@gmail.com"
     gem.homepage = "http://github.com/Kurotoshiro/simpleMailer"
     gem.authors = ["Yoann LE TOUCHE"]
+    gem.add_dependency "shared-mime-info" 
     gem.add_development_dependency "thoughtbot-shoulda"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
