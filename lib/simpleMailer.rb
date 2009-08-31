@@ -6,7 +6,6 @@ class SimpleMailer
   attr_accessor :host, :port
   attr_accessor :from, :to
   attr_accessor :title, :message
-  attr_accessor :files
   
   MARKER="THATSMAMARKER"
     
@@ -22,7 +21,13 @@ class SimpleMailer
   end
   
   def to(to)
-    raise "Not a proper email address" unless to.match(/.+@.+\..+/)
+    if to.class="Array" then
+      to.each do |ad|
+        raise "Not a proper email address" unless ad.match(/.+@.+\..+/)
+      end
+    else
+      raise "Not a proper email address" unless to.match(/.+@.+\..+/)
+    end
     @to=to
     self
   end
