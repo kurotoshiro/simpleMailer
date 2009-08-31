@@ -15,16 +15,13 @@ class SimpleMailer
     @body=''
     @files=Array.new
   end
-  
+ 
+  # Want an array
   def to(to)
-    if to.class==Array then
-      to.each do |ad|
-        raise "Not a proper email address" unless ad.match(/.+@.+\..+/)
-      end
-    else
-      raise "Not a proper email address" unless to.match(/.+@.+\..+/)
+    to.each do |ad|
+      raise "Not a proper email address" unless ad.match(/.+@.+\..+/)
     end
-    @from=to
+    @to=to
     self
   end
   
@@ -34,7 +31,7 @@ class SimpleMailer
     self
   end
   
-  def with_title(title)
+  def title(title)
     @title=title
     self
   end
@@ -45,7 +42,7 @@ class SimpleMailer
   end
 
   # WARNING : with_files clear @files before adding new ones
-  def with_files(files)
+  def attach_files(files)
     @files=Array.new
     files.each do |file|
       raise "File #{file} doesn't exist" unless File.exists?(file)
@@ -70,7 +67,6 @@ Content-Transfer-Encoding: base64
 
 #{b64file}
 
-
 EOF
   end
 
@@ -78,7 +74,7 @@ EOF
   def generate_body
     @body =<<EOF
 From: #{@from}
-To: #{@from}
+To: #{@to.join(",")}
 Subject: #{@title}
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary=#{MARKER}
@@ -101,7 +97,7 @@ EOF
     Net::SMTP.start(@host,@port) do |smtp|
       begin
         generate_body
-        smtp.send_message(@body,@from,@from)
+        smtp.send_message(@body,@from,@to)
         return true
       rescue => e
         e
