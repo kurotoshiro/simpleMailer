@@ -3,32 +3,28 @@ class SimpleMailer
   require 'net/smtp'
   require 'shared-mime-info'
 
-  attr_accessor :host, :port
-  attr_accessor :from, :to
-  attr_accessor :title, :message
-  
   MARKER="THATSMAMARKER"
     
   def initialize(host="",port=25)
     @host=host
     @port=port
-    @from=""
-    @to=""
-    @title=""
-    @message=""
+    @from=''
+    @to=''
+    @title=''
+    @message=''
+    @body=''
     @files=Array.new
-    @body=""
   end
   
   def to(to)
-    if to.class="Array" then
+    if to.class==Array then
       to.each do |ad|
         raise "Not a proper email address" unless ad.match(/.+@.+\..+/)
       end
     else
       raise "Not a proper email address" unless to.match(/.+@.+\..+/)
     end
-    @to=to
+    @from=to
     self
   end
   
@@ -82,7 +78,7 @@ EOF
   def generate_body
     @body =<<EOF
 From: #{@from}
-To: #{@to}
+To: #{@from}
 Subject: #{@title}
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary=#{MARKER}
@@ -105,7 +101,7 @@ EOF
     Net::SMTP.start(@host,@port) do |smtp|
       begin
         generate_body
-        smtp.send_message(@body,@from,@to)
+        smtp.send_message(@body,@from,@from)
         return true
       rescue => e
         e
