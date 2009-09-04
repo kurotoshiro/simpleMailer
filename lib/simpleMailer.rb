@@ -57,7 +57,7 @@ class SimpleMailer
     filename=File.basename(file)
     part=String.new
     File.open(file) do |f|
-      b64file=Base64.b64encode(f.read)
+      b64file=Base64.encode64(f.read)
     end
     part =<<EOF
 --#{MARKER}
