@@ -82,9 +82,8 @@ Content-Type: multipart/mixed; boundary=#{MARKER}
 Content-Type: text/plain
 Content-Transfer-Encoding:8bit
 
-#{@message}
-
 EOF
+    @body+=@message+"\n\n"
     # Time to process our files
     @files.each do |file|
       @body+=generate_file_part(file)
