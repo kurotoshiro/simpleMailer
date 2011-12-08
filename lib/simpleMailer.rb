@@ -52,6 +52,10 @@ class SimpleMailer
     self
   end
 
+  def addr(field)
+    return field.gsub(/[^<]*<([^>]*)>/, '\1')
+  end
+
   def generate_file_part(file)
     b64file=String.new
     filename=File.basename(file)
@@ -96,7 +100,8 @@ EOF
     Net::SMTP.start(@host,@port) do |smtp|
       begin
         generate_body
-        smtp.send_message(@body,@from,@to)
+        to = @to.map { |t| addr(t) }.join(', ')
+        smtp.send_message(@body,addr(@from),to)
         return true
       rescue => e
         e
