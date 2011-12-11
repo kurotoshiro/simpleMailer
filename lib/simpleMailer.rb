@@ -100,7 +100,7 @@ EOF
     Net::SMTP.start(@host,@port) do |smtp|
       begin
         generate_body
-        to = @to.map { |t| addr(t) }.join(', ')
+        to = @to.map { |t| addr(t) }
         smtp.send_message(@body,addr(@from),to)
         return true
       rescue => e
