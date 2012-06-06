@@ -15,7 +15,13 @@ class SimpleMailer
     @body=''
     @files=Array.new
   end
- 
+
+  private
+  def cr_lf(string)
+    string.gsub('\r',"0x0D".hex.chr).gsub('\n',"0x0A".hex.chr)
+  end
+
+  public 
   # Want an array
   def to(to)
     to.each do |ad|
@@ -37,7 +43,7 @@ class SimpleMailer
   end
   
   def message(message)
-    @message=message
+    @message=cr_lf(message)
     self
   end
 
