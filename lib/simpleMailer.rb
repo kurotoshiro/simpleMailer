@@ -14,6 +14,7 @@ class SimpleMailer
     @message=''
     @body=''
     @files=Array.new
+    @content_type = 'text/plain'
   end
 
   private
@@ -62,6 +63,10 @@ class SimpleMailer
     return field.gsub(/[^<]*<([^>]*)>/, '\1')
   end
 
+  def content_type(type)
+    @content_type = type
+  end
+
   def generate_file_part(file)
     b64file=String.new
     filename=File.basename(file)
@@ -89,7 +94,7 @@ Subject: #{@title}
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary=#{MARKER}
 --#{MARKER}
-Content-Type: text/plain
+Content-Type: #{@content_type}
 Content-Transfer-Encoding:8bit
 
 EOF
